@@ -18,19 +18,89 @@ class MyApp extends StatelessWidget {
 
   final ValueNotifier<ThemeMode> _notifier = ValueNotifier(ThemeMode.light);
 
+  final ThemeData _customLightTheme = ThemeData.light().copyWith(
+    colorScheme: ThemeData.light().colorScheme.copyWith(
+      primary: Colors.orange,
+      secondary: Colors.black,
+      background: Colors.white,
+      onPrimary: Colors.orange, 
+      onSecondary: Colors.orange, 
+      onBackground: Colors.black, 
+      onSurface: Colors.black,
+    ),
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(
+        fontFamily: 'Raleway', 
+        fontWeight: FontWeight.bold, 
+        color: Colors.black,
+      ), 
+      bodyMedium: TextStyle( 
+        fontFamily: 'Raleway',
+        fontWeight: FontWeight.bold, 
+        color: Colors.black,
+      ),
+      headlineSmall: TextStyle(
+        fontFamily: 'Raleway',
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+      labelLarge: TextStyle(
+        fontFamily: 'Raleway',
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    ),
+    
+  );
+
+  final ThemeData _customDarkTheme = ThemeData.dark().copyWith(
+    colorScheme: ThemeData.dark().colorScheme.copyWith(
+      primary: Colors.black,
+      secondary: Colors.orange,
+      background: Colors.black,
+      onPrimary: Colors.black,
+      onSecondary: Colors.black, 
+      onBackground: Colors.orange, 
+      onSurface: Colors.orange,
+    ),
+    textTheme: const TextTheme(
+      displayLarge: TextStyle( 
+        fontFamily: 'Raleway',
+        fontWeight: FontWeight.bold, 
+        color: Colors.orange,
+      ), 
+      bodyMedium: TextStyle( 
+        fontFamily: 'Raleway',
+        fontWeight: FontWeight.bold, 
+        color: Colors.orange,
+      ),
+      headlineSmall: TextStyle(
+        fontFamily: 'Raleway',
+        fontWeight: FontWeight.bold,
+        color: Colors.orange,
+      ),
+      labelLarge: TextStyle(
+        fontFamily: 'Raleway',
+        fontWeight: FontWeight.bold,
+        color: Colors.orange,
+      ),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ThemeMode>(
-        valueListenable: _notifier,
-        builder: (_, mode, __) {
-          return MaterialApp(
-            title: 'CS 492 Weather App',
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
-            themeMode: mode,
-            home: MyHomePage(title: "CS492 Weather App", notifier: _notifier),
-          );
-        });
+      valueListenable: _notifier,
+      builder: (_, mode, __) {
+        return MaterialApp(
+          title: 'CS 492 Weather App',
+          theme: _customLightTheme,
+          darkTheme: _customDarkTheme,
+          themeMode: mode,
+          home: MyHomePage(title: "Weather App", notifier: _notifier),
+        );
+      }
+    );
   }
 }
 
@@ -142,8 +212,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(widget.title),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSecondary
+          ),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -176,6 +250,8 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Switch(
               value: _light,
               onChanged: _toggleLight,
+              activeColor: Theme.of(context).colorScheme.primary, // Thumb color when active
+              activeTrackColor: Theme.of(context).colorScheme.primary.withOpacity(0.5), // Track color when active
             ),
           ),
         ],
@@ -185,21 +261,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
   SafeArea settingsDrawer() {
     return SafeArea(
-      child: Column(
-        children: [
-          SettingsHeaderText(context: context, text: "Settings:"),
-          modeToggle(),
-          SettingsHeaderText(context: context, text: "My Locations:"),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Location(
+      child: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: Column(
+          children: [
+            SettingsHeaderText(context: context, text: "Settings:"),
+            modeToggle(),
+            SettingsHeaderText(context: context, text: "My Locations:"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Location(
                 setLocation: setLocation,
                 getLocation: getLocation,
                 closeEndDrawer: _closeEndDrawer),
-          ),
-          ElevatedButton(
-              onPressed: _closeEndDrawer, child: const Text("Close Settings"))
-        ],
+            ),
+            ElevatedButton(
+              onPressed: _closeEndDrawer, 
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+              ),
+              child: Text("Close Settings",
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary
+                  ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

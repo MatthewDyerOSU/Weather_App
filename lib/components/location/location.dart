@@ -138,7 +138,8 @@ class _LocationState extends State<Location> {
         IconButton(
           icon: const Icon(Icons.edit),
           onPressed: toggleEditMode,
-          color: const Color.fromRGBO(18, 98, 227, 1.0),
+          // color: const Color.fromRGBO(18, 98, 227, 1.0),
+          color: Theme.of(context).colorScheme.secondary,
         )
       ],
     );
@@ -179,12 +180,19 @@ class _LocationState extends State<Location> {
       children: [
         ElevatedButton(
           onPressed: addLocationGPSButtonPressed,
-          child: const SizedBox(
-            width: 140,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+          ),
+          child: SizedBox(
+            width: 145,
             child: Row(
               children: [
-                Text('Add GPS Location'),
-                Icon(Icons.location_on_outlined),
+                Text('Add GPS Location',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary
+                  ),
+                ),
+                const Icon(Icons.location_on_outlined),
               ],
             ),
           ),
@@ -202,7 +210,13 @@ class _LocationState extends State<Location> {
         ),
         ElevatedButton(
           onPressed: addLocationButtonPressed,
-          child: const Text('Add Manual Location'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+          ),
+          child: Text('Add Manual Location',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary
+          )),
         ),
       ],
     );
