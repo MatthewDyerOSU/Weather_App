@@ -74,56 +74,7 @@ class ForecastWidget extends StatelessWidget {
     return formattedDateTime;
   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     WeatherForecast selectedForecast = forecasts[selectedForecastIndex];
-//     return Column(
-//       children: [
-//         LocationTextWidget(location: location),
-//         TemperatureWidget(forecasts: [selectedForecast]),
-//         const SizedBox(height: 16),
-//         IconWidget(description: selectedForecast.shortForecast),
-//         const SizedBox(height: 16), 
-//         DescriptionWidget(forecasts: [selectedForecast]),
-//         Expanded(
-//           child: Container(
-//             height: 200, // Set a fixed height for the horizontal list
-//             child: ListView.builder(
-//               scrollDirection: Axis.horizontal,
-//               itemCount: forecasts.length,
-//               itemBuilder: (context, index) {
-//                 final forecast = forecasts[index];
-//                 final timeStr = convertDateTime(forecast.startTime);
-//                 return GestureDetector(
-//                   onTap: () => onForecastSelected(index),
-//                   child: Card( // Use a Card for each forecast day for a nicer look
-//                     child: Container(
-//                       width: 160, // Set a fixed width for each item
-//                       child: Column(
-//                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                         children: [
-//                           Text(
-//                             timeStr, 
-//                             style: Theme.of(context).textTheme.headlineSmall,
-//                             textAlign: TextAlign.center,
-//                           ),
-//                           IconWidget(description: forecast.shortForecast),
-//                           Text('${forecast.temperature}°', style: Theme.of(context).textTheme.headlineSmall),
-//                           Text(forecast.shortForecast),
-//                         ],
-//                       ),
-//                     ),
-//                   )
-//                 );
-//               },
-//             ),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-@override
+  @override
   Widget build(BuildContext context) {
     WeatherForecast selectedForecast = forecasts[selectedForecastIndex];
     return Column(
@@ -254,7 +205,7 @@ class IconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String iconPath = getIconPathFromDescription(description);
     double screenWidth = MediaQuery.of(context).size.width;
-    return Image.asset(iconPath, width: screenWidth / 2); // Adjust size as needed
+    return Image.asset(iconPath, width: screenWidth / 3); // Adjust size as needed
   }
 
   String getIconPathFromDescription(String description) {
