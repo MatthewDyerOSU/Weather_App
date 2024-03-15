@@ -24,11 +24,19 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
-  int selectedForecastIndex = 0;
+  int selectedDailyForecastIndex = 0;
+  int selectedHourlyForecastIndex = 0;
+  bool isHourlySelected = false;
 
-  void setSelectedForecast(int index) {
+  void setSelectedForecast(int index, {required bool hourly}) {
     setState(() {
-      selectedForecastIndex = index;
+      if (hourly) {
+        selectedHourlyForecastIndex = index;
+        isHourlySelected = true;
+      } else {
+        selectedDailyForecastIndex = index;
+        isHourlySelected = false;
+      }
     });
   }
 
@@ -43,7 +51,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
             // forecasts: widget.getForecastsHourly()
             forecasts: forecasts,
             forecastsHourly: forecastsHourly,
-            selectedForecastIndex: selectedForecastIndex,
+            selectedDailyForecastIndex: selectedDailyForecastIndex,
+            selectedHourlyForecastIndex: selectedHourlyForecastIndex,
+            isHourlySelected: isHourlySelected,
             onForecastSelected: setSelectedForecast,
           )
         : LocationWidget(widget: widget));
@@ -51,20 +61,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
 }
 
 class ForecastWidget extends StatelessWidget {
+  final BuildContext context;
   final UserLocation location;
   final List<WeatherForecast> forecasts;
   final List<WeatherForecast> forecastsHourly;
-  final BuildContext context;
-  final int selectedForecastIndex;
-  final Function(int) onForecastSelected;
+  final int selectedDailyForecastIndex;
+  final int selectedHourlyForecastIndex;
+  final bool isHourlySelected;
+  final Function(int, {required bool hourly}) onForecastSelected;
 
   const ForecastWidget({
-    super.key,
     required this.context,
+    super.key,
     required this.location,
     required this.forecasts,
     required this.forecastsHourly,
-    required this.selectedForecastIndex,
+    required this.selectedDailyForecastIndex,
+    required this.selectedHourlyForecastIndex,
+    required this.isHourlySelected,
     required this.onForecastSelected,
   });
 
@@ -76,7 +90,9 @@ class ForecastWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WeatherForecast selectedForecast = forecasts[selectedForecastIndex];
+    WeatherForecast selectedForecast = isHourlySelected
+        ? forecastsHourly[selectedHourlyForecastIndex]
+        : forecasts[selectedDailyForecastIndex];
     return Column(
       children: [
         LocationTextWidget(location: location),
@@ -94,6 +110,7 @@ class ForecastWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text('Hourly Forecasts', style: Theme.of(context).textTheme.headlineSmall),
                 ),
+// Hourly Forecasts
                 Container(
                   height: 350,
                   child: ListView.builder(
@@ -103,7 +120,7 @@ class ForecastWidget extends StatelessWidget {
                       final forecast = forecastsHourly[index];
                       final timeStr = convertDateTime(forecast.startTime);
                       return GestureDetector(
-                        onTap: () => onForecastSelected(index), // Update this if needed
+                        onTap: () => onForecastSelected(index, hourly: true), // Update this if needed
                         child: Card(
                           child: Container(
                             width: 160,
@@ -130,6 +147,7 @@ class ForecastWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text('Daily Forecasts', style: Theme.of(context).textTheme.headlineSmall),
                 ),
+// Daily Forecasts
                 Container(
                   height: 350,
                   child: ListView.builder(
@@ -139,7 +157,7 @@ class ForecastWidget extends StatelessWidget {
                       final forecast = forecasts[index];
                       final timeStr = convertDateTime(forecast.startTime);
                       return GestureDetector(
-                        onTap: () => onForecastSelected(index), // Update this if needed
+                        onTap: () => onForecastSelected(index, hourly: false), // Update this if needed
                         child: Card(
                           child: Container(
                             width: 160,
