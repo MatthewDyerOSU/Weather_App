@@ -11,6 +11,7 @@ class WeatherForecast {
   final String windDirection;
   final String shortForecast;
   final String detailedForecast;
+  final String startTime;
 
   const WeatherForecast({
     required this.name,
@@ -20,9 +21,11 @@ class WeatherForecast {
     required this.windDirection,
     required this.shortForecast,
     required this.detailedForecast,
+    required this.startTime,
   });
 
   factory WeatherForecast.fromJson(Map<String, dynamic> json) {
+    // final startTime = json['startTime'] as String? ?? '';
     return switch (json) {
       {
         'name': String name,
@@ -32,6 +35,7 @@ class WeatherForecast {
         'windDirection': String windDirection,
         'shortForecast': String shortForecast,
         'detailedForecast': String detailedForecast,
+        'startTime': String startTime,
       } =>
         WeatherForecast(
           name: name,
@@ -41,6 +45,7 @@ class WeatherForecast {
           windDirection: windDirection,
           shortForecast: shortForecast,
           detailedForecast: detailedForecast,
+          startTime: startTime,
         ),
       _ => throw const FormatException('Failed to load Weather Forecast.'),
     };

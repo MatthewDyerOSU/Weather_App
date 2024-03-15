@@ -39,6 +39,7 @@ dependencies:
   http: ^1.2.0
   shared_preferences: ^2.2.2
   sqflite: ^2.3.2
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,7 @@ flutter:
     - assets/sql/insert.sql
     - assets/sql/get_all.sql
     - assets/sql/delete.sql
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

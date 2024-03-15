@@ -159,7 +159,12 @@ class _LocationState extends State<Location> {
             width: 200,
             child: FittedBox(
               child: Text(
-                  "${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}"),
+                  "${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontFamily: 'Raleway',
+                  )
+                ),
             ),
           ),
           (_editMode)
@@ -247,10 +252,19 @@ class _LocationTextState extends State<LocationText> {
         width: widget.width,
         child: TextField(
             controller: widget.controller,
-            style: const TextStyle(fontSize: 15.0, height: 1.0),
+            style: TextStyle(
+              fontSize: 15.0, 
+              height: 1.0,
+              fontFamily: 'Raleway',
+              color: Theme.of(context).colorScheme.secondary,
+              ),
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               labelText: widget.labelText,
+              labelStyle: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontFamily: 'Raleway',
+              )
             )),
       ),
     );
